@@ -1,0 +1,52 @@
+<html>
+<head>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .hidden{
+      background-color: #000;
+      transition: 1s background-color ease;
+    }
+    body{
+      background-color: #fff;
+      transition: 1s background-color ease;
+      overflow: hidden;
+    }
+    .hidden canvas{
+      opacity: 0;
+      transition: 1s opacity ease;
+    }
+    canvas{
+      opacity: 1;
+      transition: 1s opacity ease;
+    }
+
+    body.hidden::before{
+      opacity: 1;
+      transition: 3s opacity ease, 2s filter ease;
+      filter: blur(0);
+    }
+    body::before{
+      content: 'loading...';
+      opacity: 0;
+      transition: 3s opacity ease, 2s filter ease;
+      z-index: 100000;
+      color: #000;
+      text-shadow: 1px 1px 1px #333;
+      display: block;
+      position: absolute;
+      left: 2%;
+      bottom: 2%;
+      font-size: 3em;
+      font-weight: lighter;
+      font-style: italic;
+      filter: blur(6px);
+    }
+  </style>
+</head>
+<body class="hidden">
+<script src ='aabb.build.js'></script>
+</body>
+</html>
