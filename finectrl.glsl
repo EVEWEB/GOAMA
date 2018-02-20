@@ -13,8 +13,8 @@ float value (vec2 st) {
 }
 
 float oril (vec2 st) {
-    return sin(dot(st.xy,
-                         vec2(0.5,0.5))*u_time);
+    return dot(st.xy,
+                         vec2(mod(u_time,0.5),mod(u_time,0.5)));
 }
 
 
