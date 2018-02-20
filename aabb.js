@@ -24,15 +24,19 @@ function startRenderMesh(mesh){
     frag: glslify(`
       precision highp float;
 
+      #pragma glslify: snoise2 = require(glsl-noise/simplex/2d)
+
       uniform vec4 color;
       uniform float time;
 
-      varying vec3 pos;
+      varying vec2 posA;
       varying float height;
 
 
       void main(){
-        gl_FragColor = vec4(vec3(0.5,0.0,0.5)+vec3(height*0.02),1.0);
+        vec2 pos2=fract(posA*100.0);
+        float flatHeight=(snoise2(pos2.xy*0.05)*3.0)+(abs(snoise2(pos2.xy*0.01))*35.0)+(snoise2(pos2.xy)*0.5);
+        gl_FragColor = vec4(pos2,1.0,1.0);//vec4(vec3(0.5,0.0,0.5)+vec3(flatHeight*0.02),1.0);
       }
     `),
     vert: glslify(`
@@ -46,11 +50,12 @@ function startRenderMesh(mesh){
       uniform mat4 model,view,proj;
 
       varying float height;
-      varying vec3 pos;
+      varying vec2 posA;
 
 
       void main(){
-        pos=vec3((position*2.0)-1.0,0.0);
+        posA=position;
+        vec3 pos=vec3((position*2.0)-1.0,0.0);
         height=(snoise2(position.xy*0.05)*3.0)+(abs(snoise2(position.xy*0.01))*35.0)+(snoise2(position.xy)*0.5);
         gl_Position = proj * view * model * vec4(vec3(pos.x,pos.y,height), 1.0);
       }
